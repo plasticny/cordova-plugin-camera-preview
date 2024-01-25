@@ -2,6 +2,7 @@ package com.cordovaplugincamerapreview;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.util.Log;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
@@ -10,12 +11,19 @@ import android.view.ViewParent;
 import android.widget.FrameLayout;
 
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Camera {
+public class CameraFragment implements CameraActivity.CameraPreviewListener {
   protected static int nextContainerViewId = ThreadLocalRandom.current().nextInt(20, 100 + 1);
+  private static final String TAG = "Camera";
+
+  private CordovaInterface cordova;
+  private CordovaWebView webView;
 
   private CameraActivity fragment;
   private CallbackContext takePictureCallbackContext;
@@ -30,14 +38,16 @@ public class Camera {
 
   private int containerViewId;
 
-  public Camera(){
+  public CameraFragment(CordovaInterface ci, CordovaWebView cwv) {
+    cordova = ci;
+    webView = cwv;
     containerViewId = nextContainerViewId++;
   }
 
   public boolean start (
     int x, int y, int width, int height,
     String defaultCamera,
-    Boolean tapToTakePicture, Boolean dragEnabled, Boolean toBack,
+    Boolean tapToTakePicture, Boolean dragEnabled, final Boolean toBack,
     String alpha,
     boolean tapFocus, boolean disableExifHeaderStripping, boolean storeToFile,
     CallbackContext callbackContext
@@ -127,11 +137,25 @@ public class Camera {
     return true;
   }
 
+  /* ======== Camera activity listeners ======== */
+  public void onPictureTaken(String originalPicture) {};
+  public void onPictureTakenError(String message) {};
+  public void onSnapshotTaken(String originalPicture) {};
+  public void onSnapshotTakenError(String message) {};
+  public void onFocusSet(int pointX, int pointY) {};
+  public void onFocusSetError(String message) {};
+  public void onBackButton() {};
   public void onCameraStarted() {
     Log.d(TAG, "Camera started");
 
     PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, "Camera started");
     pluginResult.setKeepCallback(false);
     startCameraCallbackContext.sendPluginResult(pluginResult);
-  }
+
+  };
+  public void onStartRecordVideo() {};
+  public void onStartRecordVideoError(String message) {};
+  public void onStopRecordVideo(String file) {};
+  public void onStopRecordVideoError(String error) {};
+  /* ======== Camera activity listeners ======== */
 }

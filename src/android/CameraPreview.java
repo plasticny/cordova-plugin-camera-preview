@@ -84,8 +84,8 @@ public class CameraPreview extends CordovaPlugin implements CameraActivity.Camer
     Manifest.permission.CAMERA
   };
 
-  private Camera frontCamera;
-  private Camera backCamera;
+  private CameraFragment frontCamera = null;
+  private CameraFragment backCamera = null;
 
   private CameraActivity fragment;
   private CallbackContext takePictureCallbackContext;
@@ -270,30 +270,39 @@ public class CameraPreview extends CordovaPlugin implements CameraActivity.Camer
     return true;
   }
 
-  private Camera getCamera (String direction) {
+  private CameraFragment getCamera (String direction) {
     if (direction.equals("front")) {
       return frontCamera;
     }
     else if (direction.equals("back")) {
       return backCamera;
     }
+    else {
+      throw new IllegalArgumentException("Invalid camera direction '" + direction + "'");
+    }
   }
 
   private boolean startCamera(int x, int y, int width, int height, String defaultCamera, Boolean tapToTakePicture, Boolean dragEnabled, final Boolean toBack, String alpha, boolean tapFocus, boolean disableExifHeaderStripping, boolean storeToFile, CallbackContext callbackContext) {
     Log.d(TAG, "start camera action");
 
-    if (getCamera(defaultCamera) != null) {
-      callbackContext.error("Camera already started");
-      return true;  
+    try {
+      if (getCamera(defaultCamera) != null) {
+        callbackContext.error(String.format("%s camera already started", defaultCamera));
+        return true;
+      }
+    } catch (IllegalArgumentException e) {
+      callbackContext.error("Illegal camera direction argument: " + defaultCamera);
+      return true;
     }
   
-    Camera camera = new Camera();
+    CameraFragment camera = new CameraFragment(cordova, webView);
     boolean result = camera.start(
       x, y, width, height,
       defaultCamera,
       tapToTakePicture, dragEnabled, toBack,
       alpha, 
-      tapFocus, disableExifHeaderStripping, storeToFile
+      tapFocus, disableExifHeaderStripping, storeToFile,
+      callbackContext
     );
 
     if (result == false) {
@@ -309,6 +318,8 @@ public class CameraPreview extends CordovaPlugin implements CameraActivity.Camer
 
     return true;
   }
+
+  public void onCameraStarted() {}
 
   private boolean takeSnapshot(int quality, CallbackContext callbackContext) {
     if(this.hasView(callbackContext) == false){
