@@ -8,6 +8,10 @@ Cordova plugin that allows camera interaction from Javascript and HTML
 
 **PR's are greatly appreciated.**
 
+# This Fork
+
+Add feature to support open front and back camera simultaneously.
+
 # Features
 
 <ul>
