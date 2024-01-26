@@ -62,20 +62,64 @@ CameraPreview.startCamera = function(options, onSuccess, onError) {
   ]);
 };
 
-CameraPreview.stopCamera = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "stopCamera", []);
+CameraPreview.stopCamera = function(opts, onSuccess, onError) {
+  if (!opts) {
+    opts = {};
+  } else if (isFunction(opts)) {
+    onSuccess = opts;
+    opts = {};
+  }
+
+  if (!isFunction(onSuccess)) {
+    return false;
+  }
+
+  exec(onSuccess, onError, PLUGIN_NAME, "stopCamera", [opts.cameraDirection]);
 };
 
-CameraPreview.switchCamera = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "switchCamera", []);
+CameraPreview.switchCamera = function(opts, onSuccess, onError) {
+  if (!opts) {
+    opts = {};
+  } else if (isFunction(opts)) {
+    onSuccess = opts;
+    opts = {};
+  }
+
+  if (!isFunction(onSuccess)) {
+    return false;
+  }
+
+  exec(onSuccess, onError, PLUGIN_NAME, "switchCamera", [opts.cameraDirection]);
 };
 
-CameraPreview.hide = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "hideCamera", []);
+CameraPreview.hide = function(opts, onSuccess, onError) {
+  if (!opts) {
+    opts = {};
+  } else if (isFunction(opts)) {
+    onSuccess = opts;
+    opts = {};
+  }
+
+  if (!isFunction(onSuccess)) {
+    return false;
+  }
+
+  exec(onSuccess, onError, PLUGIN_NAME, "hideCamera", [opts.cameraDirection]);
 };
 
-CameraPreview.show = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "showCamera", []);
+CameraPreview.show = function(opts, onSuccess, onError) {
+  if (!opts) {
+    opts = {};
+  } else if (isFunction(opts)) {
+    onSuccess = opts;
+    opts = {};
+  }
+
+  if (!isFunction(onSuccess)) {
+    return false;
+  }
+
+  exec(onSuccess, onError, PLUGIN_NAME, "showCamera", [opts.cameraDirection]);
 };
 
 CameraPreview.takeSnapshot = function(opts, onSuccess, onError) {
@@ -94,7 +138,7 @@ CameraPreview.takeSnapshot = function(opts, onSuccess, onError) {
     opts.quality = 85;
   }
 
-  exec(onSuccess, onError, PLUGIN_NAME, "takeSnapshot", [opts.quality]);
+  exec(onSuccess, onError, PLUGIN_NAME, "takeSnapshot", [opts.cameraDirection, opts.quality]);
 };
 
 CameraPreview.takePicture = function(opts, onSuccess, onError) {
@@ -116,111 +160,111 @@ CameraPreview.takePicture = function(opts, onSuccess, onError) {
     opts.quality = 85;
   }
 
-  exec(onSuccess, onError, PLUGIN_NAME, "takePicture", [opts.width, opts.height, opts.quality]);
+  exec(onSuccess, onError, PLUGIN_NAME, "takePicture", [opts.cameraDirection, opts.opts.width, opts.height, opts.quality]);
 };
 
-CameraPreview.setColorEffect = function(effect, onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "setColorEffect", [effect]);
+CameraPreview.setColorEffect = function(cameraDirection, effect, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "setColorEffect", [cameraDirection, effect]);
 };
 
-CameraPreview.setZoom = function(zoom, onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "setZoom", [zoom]);
+CameraPreview.setZoom = function(cameraDirection, zoom, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "setZoom", [cameraDirection, zoom]);
 };
 
-CameraPreview.getMaxZoom = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getMaxZoom", []);
+CameraPreview.getMaxZoom = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getMaxZoom", [opts.cameraDirection]);
 };
 
-CameraPreview.getZoom = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getZoom", []);
+CameraPreview.getZoom = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getZoom", [opts.cameraDirection]);
 };
 
-CameraPreview.getHorizontalFOV = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getHorizontalFOV", []);
+CameraPreview.getHorizontalFOV = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getHorizontalFOV", [opts.cameraDirection]);
 };
 
-CameraPreview.setPreviewSize = function(dimensions, onSuccess, onError) {
+CameraPreview.setPreviewSize = function(cameraDirection, dimensions, onSuccess, onError) {
   dimensions = dimensions || {};
   dimensions.width = dimensions.width || window.screen.width;
   dimensions.height = dimensions.height || window.screen.height;
 
-  exec(onSuccess, onError, PLUGIN_NAME, "setPreviewSize", [dimensions.width, dimensions.height]);
+  exec(onSuccess, onError, PLUGIN_NAME, "setPreviewSize", [cameraDirection, dimensions.width, dimensions.height]);
 };
 
-CameraPreview.getSupportedPictureSizes = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getSupportedPictureSizes", []);
+CameraPreview.getSupportedPictureSizes = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getSupportedPictureSizes", [opts.cameraDirection]);
 };
 
-CameraPreview.getSupportedFlashModes = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getSupportedFlashModes", []);
+CameraPreview.getSupportedFlashModes = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getSupportedFlashModes", [opts.cameraDirection]);
 };
 
-CameraPreview.getSupportedColorEffects = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getSupportedColorEffects", []);
+CameraPreview.getSupportedColorEffects = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getSupportedColorEffects", [opts.cameraDirection]);
 };
 
-CameraPreview.setFlashMode = function(flashMode, onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "setFlashMode", [flashMode]);
+CameraPreview.setFlashMode = function(cameraDirection, flashMode, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "setFlashMode", [cameraDirection, flashMode]);
 };
 
-CameraPreview.getFlashMode = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getFlashMode", []);
+CameraPreview.getFlashMode = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getFlashMode", [opts.cameraDirection]);
 };
 
-CameraPreview.getSupportedFocusModes = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getSupportedFocusModes", []);
+CameraPreview.getSupportedFocusModes = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getSupportedFocusModes", [opts.cameraDirection]);
 };
 
-CameraPreview.getFocusMode = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getFocusMode", []);
+CameraPreview.getFocusMode = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getFocusMode", [opts.cameraDirection]);
 };
 
-CameraPreview.setFocusMode = function(focusMode, onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "setFocusMode", [focusMode]);
+CameraPreview.setFocusMode = function(cameraDirection, focusMode, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "setFocusMode", [cameraDirection, focusMode]);
 };
 
-CameraPreview.tapToFocus = function(xPoint, yPoint, onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "tapToFocus", [xPoint, yPoint]);
+CameraPreview.tapToFocus = function(cameraDirection, xPoint, yPoint, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "tapToFocus", [cameraDirection, xPoint, yPoint]);
 };
 
-CameraPreview.getExposureModes = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getExposureModes", []);
+CameraPreview.getExposureModes = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getExposureModes", [opts.cameraDirection]);
 };
 
-CameraPreview.getExposureMode = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getExposureMode", []);
+CameraPreview.getExposureMode = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getExposureMode", [opts.cameraDirection]);
 };
 
-CameraPreview.setExposureMode = function(exposureMode, onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "setExposureMode", [exposureMode]);
+CameraPreview.setExposureMode = function(cameraDirection, exposureMode, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "setExposureMode", [cameraDirection, exposureMode]);
 };
 
-CameraPreview.getExposureCompensation = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getExposureCompensation", []);
+CameraPreview.getExposureCompensation = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getExposureCompensation", [opts.cameraDirection]);
 };
 
-CameraPreview.setExposureCompensation = function(exposureCompensation, onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "setExposureCompensation", [exposureCompensation]);
+CameraPreview.setExposureCompensation = function(cameraDirection, exposureCompensation, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "setExposureCompensation", [cameraDirection, exposureCompensation]);
 };
 
-CameraPreview.getExposureCompensationRange = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getExposureCompensationRange", []);
+CameraPreview.getExposureCompensationRange = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getExposureCompensationRange", [opts.cameraDirection]);
 };
 
-CameraPreview.getSupportedWhiteBalanceModes = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getSupportedWhiteBalanceModes", []);
+CameraPreview.getSupportedWhiteBalanceModes = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getSupportedWhiteBalanceModes", [opts.cameraDirection]);
 };
 
-CameraPreview.getWhiteBalanceMode = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getWhiteBalanceMode", []);
+CameraPreview.getWhiteBalanceMode = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getWhiteBalanceMode", [opts.cameraDirection]);
 };
 
-CameraPreview.setWhiteBalanceMode = function(whiteBalanceMode, onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "setWhiteBalanceMode", [whiteBalanceMode]);
+CameraPreview.setWhiteBalanceMode = function(cameraDirection, whiteBalanceMode, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "setWhiteBalanceMode", [cameraDirection, whiteBalanceMode]);
 };
 
-CameraPreview.getCameraCharacteristics = function(onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "getCameraCharacteristics", []);
+CameraPreview.getCameraCharacteristics = function(opts, onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "getCameraCharacteristics", [opts.cameraDirection]);
 };
 
 CameraPreview.onBackButton = function(onSuccess, onError) {
@@ -273,8 +317,19 @@ CameraPreview.startRecordVideo = function (opts, onSuccess, onError) {
   exec(onSuccess, onError, PLUGIN_NAME, "startRecordVideo", [opts.cameraDirection, opts.width, opts.height, opts.quality, opts.withFlash]);
 };
 
-CameraPreview.stopRecordVideo = function (onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "stopRecordVideo");
+CameraPreview.stopRecordVideo = function (opts, onSuccess, onError) {
+  if (!opts) {
+    opts = {};
+  } else if (isFunction(opts)) {
+    onSuccess = opts;
+    opts = {};
+  }
+
+  if (!isFunction(onSuccess)) {
+    return false;
+  }
+
+  exec(onSuccess, onError, PLUGIN_NAME, "stopRecordVideo", [opts.cameraDirection]);
 };
 
 CameraPreview.FOCUS_MODE = {

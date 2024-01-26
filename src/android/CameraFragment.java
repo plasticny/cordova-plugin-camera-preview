@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.util.Log;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.hardware.Camera;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -16,6 +17,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
 
+import java.io.File;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CameraFragment implements CameraActivity.CameraPreviewListener {
@@ -24,6 +26,7 @@ public class CameraFragment implements CameraActivity.CameraPreviewListener {
 
   private CordovaInterface cordova;
   private CordovaWebView webView;
+  private ViewParent webViewParent;
 
   private CameraActivity fragment;
   private CallbackContext takePictureCallbackContext;
@@ -34,8 +37,6 @@ public class CameraFragment implements CameraActivity.CameraPreviewListener {
   private CallbackContext startCameraCallbackContext;
   private CallbackContext tapBackButtonContext;
 
-  private ViewParent webViewParent;
-
   private int containerViewId;
 
   public CameraFragment(CordovaInterface ci, CordovaWebView cwv) {
@@ -44,7 +45,15 @@ public class CameraFragment implements CameraActivity.CameraPreviewListener {
     containerViewId = nextContainerViewId++;
   }
 
-  public boolean start (
+  public boolean hasView () {
+    return fragment != null;
+  }
+
+  public Camera getCamera () {
+    return fragment.getCamera();
+  }
+
+  public boolean startCamera (
     int x, int y, int width, int height,
     String defaultCamera,
     Boolean tapToTakePicture, Boolean dragEnabled, final Boolean toBack,
@@ -137,6 +146,34 @@ public class CameraFragment implements CameraActivity.CameraPreviewListener {
     return true;
   }
 
+  public boolean startRecordVideo(final int width, final int height, final int quality, final boolean withFlash, CallbackContext callbackContext) {
+    final String filename = String.format("$s_videoTmp", fragment.defaultCamera);
+    startRecordVideoCallbackContext = callbackContext;
+     cordova.getThreadPool().execute(new Runnable() {
+      @Override
+      public void run() {
+        fragment.startRecord(getFilePath(filename), fragment.defaultCamera, width, height, quality, withFlash);
+      }
+    });
+    return true;
+  }
+
+  private String getFilePath(String filename) {
+    String videoFilePath = cordova.getActivity().getCacheDir().toString() + "/";
+    String fileName = filename;
+    String videoFileExtension = ".mp4";
+
+    int i = 1;
+
+    while (new File(videoFilePath + fileName + videoFileExtension).exists()) {
+      // Add number suffix if file exists
+      fileName = filename + '_' + i;
+      i++;
+    }
+
+    return videoFilePath + fileName + videoFileExtension;
+  }
+
   /* ======== Camera activity listeners ======== */
   public void onPictureTaken(String originalPicture) {};
   public void onPictureTakenError(String message) {};
@@ -145,6 +182,7 @@ public class CameraFragment implements CameraActivity.CameraPreviewListener {
   public void onFocusSet(int pointX, int pointY) {};
   public void onFocusSetError(String message) {};
   public void onBackButton() {};
+
   public void onCameraStarted() {
     Log.d(TAG, "Camera started");
 
@@ -152,9 +190,23 @@ public class CameraFragment implements CameraActivity.CameraPreviewListener {
     pluginResult.setKeepCallback(false);
     startCameraCallbackContext.sendPluginResult(pluginResult);
 
-  };
-  public void onStartRecordVideo() {};
-  public void onStartRecordVideoError(String message) {};
+  }
+
+  public void onStartRecordVideo() {
+    Log.d(TAG, "onStartRecordVideo started");
+
+    PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+    pluginResult.setKeepCallback(true);
+
+    startRecordVideoCallbackContext.sendPluginResult(pluginResult);
+  }
+
+  public void onStartRecordVideoError(String message) {
+    Log.d(TAG, "CameraPreview onStartRecordVideo");
+
+    startRecordVideoCallbackContext.error(message);
+  }
+
   public void onStopRecordVideo(String file) {};
   public void onStopRecordVideoError(String error) {};
   /* ======== Camera activity listeners ======== */
