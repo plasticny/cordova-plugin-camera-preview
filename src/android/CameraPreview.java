@@ -317,7 +317,7 @@ public class CameraPreview extends CordovaPlugin implements CameraActivity.Camer
     return true;
   }
 
-  public void onCameraStarted() {}
+  public void onCameraStarted() {};
 
   private boolean takeSnapshot(final String cameraDirection, int quality, CallbackContext callbackContext) {
     if(this.hasView(cameraDirection, callbackContext) == false){
@@ -382,41 +382,18 @@ public class CameraPreview extends CordovaPlugin implements CameraActivity.Camer
     return getCameraFragment(cameraDirection).startRecordVideo(width, height, quality, withFlash, callbackContext);
   }
 
-  public void onStartRecordVideo() {}
-
-  public void onStartRecordVideoError(String message) {}
+  public void onStartRecordVideo() {};
+  public void onStartRecordVideoError(String message) {};
 
   private boolean stopRecordVideo(final String cameraDirection, CallbackContext callbackContext) {
     if(this.hasView(cameraDirection, callbackContext) == false){
       return true;
     }
-
-    stopRecordVideoCallbackContext = callbackContext;
-
-    cordova.getThreadPool().execute(new Runnable() {
-      @Override
-      public void run() {
-        fragment.stopRecord();
-      }
-    });
-
-    return true;
+    return getCameraFragment(cameraDirection).stopRecordVideo(callbackContext);
   }
 
-  public void onStopRecordVideo(String file) {
-    Log.d(TAG, "onStopRecordVideo success");
-
-    PluginResult result = new PluginResult(PluginResult.Status.OK, file);
-    result.setKeepCallback(true);
-
-    stopRecordVideoCallbackContext.sendPluginResult(result);
-  }
-
-  public void onStopRecordVideoError(String err) {
-    Log.d(TAG, "onStopRecordVideo error");
-
-    stopRecordVideoCallbackContext.error(err);
-  }
+  public void onStopRecordVideo(String file) {};
+  public void onStopRecordVideoError(String err) {};
 
   private boolean setColorEffect(final String cameraDirection, String effect, CallbackContext callbackContext) {
     if(this.hasCamera(cameraDirection, callbackContext) == false){

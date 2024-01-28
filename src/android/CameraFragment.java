@@ -158,6 +158,19 @@ public class CameraFragment implements CameraActivity.CameraPreviewListener {
     return true;
   }
 
+  public boolean stopRecordVideo(CallbackContext callbackContext) {
+    stopRecordVideoCallbackContext = callbackContext;
+
+    cordova.getThreadPool().execute(new Runnable() {
+      @Override
+      public void run() {
+        fragment.stopRecord();
+      }
+    });
+
+    return true;
+  }
+
   private String getFilePath(String filename) {
     String videoFilePath = cordova.getActivity().getCacheDir().toString() + "/";
     String fileName = filename;
@@ -207,7 +220,19 @@ public class CameraFragment implements CameraActivity.CameraPreviewListener {
     startRecordVideoCallbackContext.error(message);
   }
 
-  public void onStopRecordVideo(String file) {};
-  public void onStopRecordVideoError(String error) {};
+  public void onStopRecordVideo(String file) {
+    Log.d(TAG, "onStopRecordVideo success");
+
+    PluginResult result = new PluginResult(PluginResult.Status.OK, file);
+    result.setKeepCallback(true);
+
+    stopRecordVideoCallbackContext.sendPluginResult(result);
+  };
+
+  public void onStopRecordVideoError(String error) {
+    Log.d(TAG, "onStopRecordVideo error");
+
+    stopRecordVideoCallbackContext.error(error);
+  };
   /* ======== Camera activity listeners ======== */
 }

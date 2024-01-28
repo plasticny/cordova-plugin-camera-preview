@@ -61,7 +61,7 @@ declare module 'cordova-plugin-camera-preview' {
     show(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
     takePicture(options?: CameraPreviewTakePictureOptions|CameraPreviewSuccessHandler, onSuccess?: CameraPreviewSuccessHandler|CameraPreviewErrorHandler, onError?: CameraPreviewErrorHandler): void;
     takeSnapshot(options?: CameraPreviewTakeSnapshotOptions|CameraPreviewSuccessHandler, onSuccess?: CameraPreviewSuccessHandler|CameraPreviewErrorHandler, onError?: CameraPreviewErrorHandler): void;
-    setColorEffect(cameraDirection?:CameraPreviewCameraDirection|string, effect: CameraPreviewColorEffect|string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    setColorEffect(cameraDirection:CameraPreviewCameraDirection|string, effect: CameraPreviewColorEffect|string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
     setZoom(cameraDirection?:CameraPreviewCameraDirection|string, zoom?: number, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
     startRecordVideo(options?:CameraPreviewStartRecordVideoOptions|CameraPreviewSuccessHandler, onSuccess?:CameraPreviewSuccessHandler|CameraPreviewErrorHandler, onError?:CameraPreviewErrorHandler):void;
     stopRecordVideo(options?: CameraPreviewCameraDirectionOption|CameraPreviewSuccessHandler, onSuccess?:CameraPreviewSuccessHandler|CameraPreviewErrorHandler, onError?:CameraPreviewErrorHandler):void;
@@ -73,7 +73,7 @@ declare module 'cordova-plugin-camera-preview' {
     getSupportedPictureSizes(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
     getSupportedFlashModes(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
     getSupportedColorEffects(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    setFlashMode(cameraDirection?: CameraPreviewCameraDirection|string, flashMode: CameraPreviewFlashMode|string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    setFlashMode(cameraDirection: CameraPreviewCameraDirection|string, flashMode: CameraPreviewFlashMode|string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
     getSupportedFocusModes(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
     getFocusMode(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
     setFocusMode(cameraDirection?: CameraPreviewCameraDirection|string, focusMode?: CameraPreviewFocusMode|string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
