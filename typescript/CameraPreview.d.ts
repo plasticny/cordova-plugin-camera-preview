@@ -9,6 +9,10 @@ declare module 'cordova-plugin-camera-preview' {
   type CameraPreviewFocusMode = 'fixed'|'auto'|'continuous'|'continuous-picture'|'continuous-video'|'edof'|'infinity'|'macro';
   type CameraPreviewWhiteBalanceMode = 'lock'|'auto'|'continuous'|'incandescent'|'cloudy-daylight'|'daylight'|'fluorescent'|'shade'|'twilight'|'warm-fluorescent';
 
+  interface CameraPreviewCameraDirectionOption {
+    cameraDirection?: CameraPreviewCameraDirection|string;
+  }
+
   interface CameraPreviewStartCameraOptions {
     alpha?: number;
     camera?: CameraPreviewCameraDirection|string;
@@ -25,13 +29,23 @@ declare module 'cordova-plugin-camera-preview' {
   }
 
   interface CameraPreviewTakePictureOptions {
+    cameraDirection?: CameraPreviewCameraDirection|string;
     height?: number;
     quality?: number;
     width?: number;
   }
 
   interface CameraPreviewTakeSnapshotOptions {
+    cameraDirection?: CameraPreviewCameraDirection|string;
     quality?: number;
+  }
+
+  interface CameraPreviewStartRecordVideoOptions {
+    cameraDirection?: CameraPreviewCameraDirection|string;
+    width?: number;
+    height?: number;
+    quality?: number;
+    withFlash?: boolean;
   }
 
   interface CameraPreviewPreviewSizeDimension {
@@ -41,40 +55,44 @@ declare module 'cordova-plugin-camera-preview' {
 
   interface CameraPreview {
     startCamera(options?: CameraPreviewStartCameraOptions, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    stopCamera(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    switchCamera(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    hide(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    show(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    stopCamera(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    switchCamera(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    hide(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    show(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
     takePicture(options?: CameraPreviewTakePictureOptions|CameraPreviewSuccessHandler, onSuccess?: CameraPreviewSuccessHandler|CameraPreviewErrorHandler, onError?: CameraPreviewErrorHandler): void;
     takeSnapshot(options?: CameraPreviewTakeSnapshotOptions|CameraPreviewSuccessHandler, onSuccess?: CameraPreviewSuccessHandler|CameraPreviewErrorHandler, onError?: CameraPreviewErrorHandler): void;
-    setColorEffect(effect: CameraPreviewColorEffect|string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    setZoom(zoom?: number, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    startRecordVideo(options?:any|CameraPreviewSuccessHandler, onSuccess?:CameraPreviewSuccessHandler|CameraPreviewErrorHandler, onError?:CameraPreviewErrorHandler):void;
-    stopRecordVideo(onSuccess?:CameraPreviewSuccessHandler, onError?:CameraPreviewErrorHandler):void;
-    getMaxZoom(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    setColorEffect(cameraDirection:CameraPreviewCameraDirection|string, effect: CameraPreviewColorEffect|string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    setZoom(cameraDirection?:CameraPreviewCameraDirection|string, zoom?: number, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    startRecordVideo(options?:CameraPreviewStartRecordVideoOptions|CameraPreviewSuccessHandler, onSuccess?:CameraPreviewSuccessHandler|CameraPreviewErrorHandler, onError?:CameraPreviewErrorHandler):void;
+    stopRecordVideo(options?: CameraPreviewCameraDirectionOption|CameraPreviewSuccessHandler, onSuccess?:CameraPreviewSuccessHandler|CameraPreviewErrorHandler, onError?:CameraPreviewErrorHandler):void;
+    getMaxZoom(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
     getSupportedFocusMode(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    getZoom(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    getHorizontalFOV(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    setPreviewSize(dimensions?: CameraPreviewPreviewSizeDimension|string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    getSupportedPictureSizes(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    getSupportedFlashModes(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    getSupportedColorEffects(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    setFlashMode(flashMode: CameraPreviewFlashMode|string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    getSupportedFocusModes(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    getFocusMode(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    setFocusMode(focusMode?: CameraPreviewFocusMode|string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    tapToFocus(xPoint?: number, yPoint?: number, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    getExposureModes(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    getExposureMode(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    setExposureMode(exposureMode?: CameraPreviewExposureMode, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    getExposureCompensation(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    setExposureCompensation(exposureCompensation?: number, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    getExposureCompensationRange(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    getSupportedWhiteBalanceModes(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    getZoom(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    getHorizontalFOV(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    setPreviewSize(cameraDirection?: CameraPreviewCameraDirection|string, dimensions?: CameraPreviewPreviewSizeDimension|string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    getSupportedPictureSizes(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    getSupportedFlashModes(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    getSupportedColorEffects(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    setFlashMode(cameraDirection: CameraPreviewCameraDirection|string, flashMode: CameraPreviewFlashMode|string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    getSupportedFocusModes(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    getFocusMode(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    setFocusMode(cameraDirection?: CameraPreviewCameraDirection|string, focusMode?: CameraPreviewFocusMode|string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    tapToFocus(cameraDirection?:CameraPreviewCameraDirection|string, xPoint?: number, yPoint?: number, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    getExposureModes(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    getExposureMode(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    setExposureMode(cameraDirection?: CameraPreviewCameraDirection|string, exposureMode?: CameraPreviewExposureMode, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    getExposureCompensation(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    setExposureCompensation(cameraDirection?: CameraPreviewCameraDirection|string, exposureCompensation?: number, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    getExposureCompensationRange(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    getSupportedWhiteBalanceModes(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
     getSupportedWhiteBalanceMode(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    setWhiteBalanceMode(whiteBalanceMode?: CameraPreviewWhiteBalanceMode|string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    setWhiteBalanceMode(cameraDirection?: CameraPreviewCameraDirection|string, whiteBalanceMode?: CameraPreviewWhiteBalanceMode|string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
     onBackButton(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
     getBlob(path: string, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
-    getCameraCharacteristics(onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+    getCameraCharacteristics(options?: CameraPreviewCameraDirectionOption, onSuccess?: CameraPreviewSuccessHandler, onError?: CameraPreviewErrorHandler): void;
+  }
+
+  interface CameraPreviewManager {
+    createCameraPreview(): CameraPreview;
   }
 }
